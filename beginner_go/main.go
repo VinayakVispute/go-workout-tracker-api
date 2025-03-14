@@ -2,73 +2,67 @@ package main
 
 import "fmt"
 
+type Person struct {
+	Name string
+	Age  int
+}
+
 func main() {
-	// Variables
-	var name string = "Vinayak Vispute"
-	fmt.Printf("This is my name %s\n", name)
 
-	age := "21"
-	fmt.Printf("%s's age is %d\n", name, age)
+	person := Person{Name: "Vinayak Vispute", Age: 21}
 
-	var city string
-	city = "Vadodara"
-	fmt.Printf("%s lives in %s\n", name, city)
+	fmt.Printf("This is my person %v\n", person)
+	fmt.Printf("This is my person %+v\n", person)
 
-	var country, continent string = "India", "Asia"
-	fmt.Printf("%s lives %s country which is located in %s continent\n", name, country, continent)
+	employee := struct {
+		Name string
+		id   int
+	}{
+		Name: "Vadodara",
+		id:   123423,
+	}
 
-	var (
-		isEmployed bool   = true
-		salary     int    = 10000
-		position   string = "developer"
-	)
-	fmt.Printf("isemployed : %t this is my salary: %d and this is my position %s", isEmployed, salary, position)
+	fmt.Printf("This is my employee : %+v\n", employee)
 
-	var defaultInt int
-	var defaultString string
-	var defaultFloat float64
-	var defaultBool bool
+	type Address struct {
+		Street string
+		City   string
+	}
 
-	fmt.Printf("defaultInt %d \ndefaultString '%s' \ndefaultFloat %f \ndefaultBool %t\n", defaultInt, defaultString, defaultFloat, defaultBool)
+	type Contact struct {
+		Name    string
+		Address Address
+		Phone   string
+	}
 
-	const pi = 3.14
+	contact := Contact{
+		Name: "Vinayak",
+		Address: Address{
+			Street: "Tarsali Street",
+			City:   "Vadodara",
+		},
+		Phone: "8401282182",
+	}
 
-	const (
-		Monday    = 1
-		Tuesday   = 2
-		Wednesday = 3
-	)
+	fmt.Printf("This is my Contact details : %+v\n", contact)
 
-	fmt.Printf("Monday : %d, Tuesday : %d, Wednesdat : %d\n", Monday, Tuesday, Wednesday)
+	fmt.Printf("Name before : %s\n", person.Name)
+	modifyPersonName(&person)
+	fmt.Printf("Name after : %s\n", person.Name)
+	person.modifyPersonName2()
+	fmt.Printf("Name after : %s\n", person.Name)
 
-	const typedAge int = 20
-	const unTypedAge = 20
-
-	fmt.Println(typedAge == unTypedAge)
-
-	const (
-		JAN = iota + 1 // 1
-		FEB            // 2
-		MAR            // 3
-		APR            // 4
-	)
-
-	fmt.Printf("Jan : %d, Feb : %d, March : %d, April : %d\n", JAN, FEB, MAR, APR)
-
-	soln := add(1, 2)
-
-	fmt.Printf("THE SUM IS : %d\n", soln)
-
-	sum, product := calculateSumAndProduct(5, 2)
-
-	fmt.Printf("THE SUM IS : %d & THIS IS PRODUCT : %d", sum, product)
-
+	x := 20
+	ptr := &x
+	fmt.Printf("Value of x: %d and address of x %p\n", x, ptr)
+	*ptr = 30
+	fmt.Printf("New Value of  x: %d and address of x %p\n", x, ptr)
 }
 
-func add(num1 int, num2 int) int {
-	return num1 + num2
+func modifyPersonName(person *Person) {
+	person.Name = "ModifiedName"
 }
 
-func calculateSumAndProduct(num1, num2 int) (int, int) {
-	return num1 + num2, num1 * num2
+func (person *Person) modifyPersonName2() {
+	person.Name = "SecondTimeNameModified"
 }
