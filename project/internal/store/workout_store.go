@@ -55,9 +55,11 @@ func (pg *PostgresWorkoutStore) CreateWorkout(workout *Workout) (*Workout, error
 		return nil, err
 	}
 
-	// we also need to insert the entries
+	// we need to look into this change and reason behind this
 
-	for _, entry := range workout.Entries {
+	// for _, entry := range workout.Entries {
+	for i := range workout.Entries {
+		entry := &workout.Entries[i]
 		query :=
 			`INSERT INTO workout_entries (workout_id, exercise_name, sets, reps, duration_seconds, weight, notes, order_index)
 			VALUES ($1, $2, $3 ,$4, $5, $6, $7, $8)
