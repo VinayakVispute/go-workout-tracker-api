@@ -128,7 +128,7 @@ func (wh *WorkoutHandler) HandleUpdateWorkoutByID(w http.ResponseWriter, r *http
 	utils.WriteJson(w, http.StatusOK, utils.Envelop{"workout": exisitingWorkout})
 }
 
-func (wh *WorkoutHandler) DeleteWorkoutByID(w http.ResponseWriter, r *http.Request) {
+func (wh *WorkoutHandler) HandleDeleteWorkoutByID(w http.ResponseWriter, r *http.Request) {
 
 	workoutID, err := utils.ReadIDParam(r)
 	if err != nil {
@@ -137,7 +137,7 @@ func (wh *WorkoutHandler) DeleteWorkoutByID(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	err = wh.workoutStore.DeleteWorkout(workoutID)
+	err = wh.workoutStore.DeleteWorkoutByID(workoutID)
 
 	if err == sql.ErrNoRows {
 		wh.logger.Printf("Error: workout not found: %v", err)
