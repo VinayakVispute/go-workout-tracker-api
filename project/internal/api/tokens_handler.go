@@ -38,7 +38,7 @@ func (h *TokenHandler) HandleCreateToken(w http.ResponseWriter, r *http.Request)
 
 	if err != nil {
 		h.logger.Printf("ERROR: createTokenRequest: %v", err)
-		utils.WriteJson(w, http.StatusBadGateway, utils.Envelop{"error": "invalid request payload"})
+		utils.WriteJSON(w, http.StatusBadGateway, utils.Envelope{"error": "invalid request payload"})
 		return
 	}
 
@@ -47,28 +47,28 @@ func (h *TokenHandler) HandleCreateToken(w http.ResponseWriter, r *http.Request)
 	user, err := h.userStore.GetUserByUsername(req.Username)
 	if err != nil || user == nil {
 		h.logger.Printf("ERROR: GetUserByUsername: %v", err)
-		utils.WriteJson(w, http.StatusInternalServerError, utils.Envelop{"error": "internal server error "})
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "internal server error "})
 		return
 	}
 
 	passwordDoMatch, err := user.PasswordHash.Matches(req.Password)
 	if err != nil {
 		h.logger.Printf("ERROR: PasswordHash.Matches: %v", err)
-		utils.WriteJson(w, http.StatusInternalServerError, utils.Envelop{"error": "internal server error"})
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "internal server error"})
 		return
 	}
 
 	if !passwordDoMatch {
-		utils.WriteJson(w, http.StatusUnauthorized, utils.Envelop{"error": "invalid credentials"})
+		utils.WriteJSON(w, http.StatusUnauthorized, utils.Envelope{"error": "invalid credentials"})
 		return
 	}
 
 	token, err := h.tokenStore.CreateNewToken(user.ID, 24*time.Hour, tokens.ScopeAuth)
 	if err != nil {
 		h.logger.Printf("ERROR: CreateNewToke: %v", err)
-		utils.WriteJson(w, http.StatusInternalServerError, utils.Envelop{"error": "internal server error "})
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "internal server error "})
 		return
 	}
 
-	utils.WriteJson(w, http.StatusCreated, utils.Envelop{"auth_token": token})
+	utils.WriteJSON(w, http.StatusCreated, utils.Envelope{"auth_token": token})
 }

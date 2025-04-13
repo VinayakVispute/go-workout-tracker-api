@@ -81,14 +81,14 @@ func (h *UserHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request)
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
 		h.logger.Printf("Error: decoding register request: %v", err)
-		utils.WriteJson(w, http.StatusBadRequest, utils.Envelop{"error": "invalid payload request"})
+		utils.WriteJSON(w, http.StatusBadRequest, utils.Envelope{"error": "invalid payload request"})
 		return
 	}
 
 	err = h.validateRegisterRequest(&req)
 	if err != nil {
 		h.logger.Printf("Error: validation error while register request")
-		utils.WriteJson(w, http.StatusBadRequest, utils.Envelop{"error": err.Error()})
+		utils.WriteJSON(w, http.StatusBadRequest, utils.Envelope{"error": err.Error()})
 		return
 	}
 
@@ -105,17 +105,17 @@ func (h *UserHandler) HandleRegisterUser(w http.ResponseWriter, r *http.Request)
 	err = user.PasswordHash.Set(req.Password)
 	if err != nil {
 		h.logger.Printf("Error: hasing password %v", err)
-		utils.WriteJson(w, http.StatusInternalServerError, utils.Envelop{"error": "internal server error  "})
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "internal server error  "})
 		return
 	}
 
 	err = h.userStore.CreateUser(user)
 	if err != nil {
 		h.logger.Printf("Error: registering user %v", err)
-		utils.WriteJson(w, http.StatusInternalServerError, utils.Envelop{"error": "internal server error  "})
+		utils.WriteJSON(w, http.StatusInternalServerError, utils.Envelope{"error": "internal server error  "})
 		return
 	}
 
-	utils.WriteJson(w, http.StatusCreated, utils.Envelop{"user": user})
+	utils.WriteJSON(w, http.StatusCreated, utils.Envelope{"user": user})
 
 }

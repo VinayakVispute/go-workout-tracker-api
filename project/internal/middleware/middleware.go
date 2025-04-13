@@ -52,19 +52,19 @@ func (um *UserMiddleware) Authenticate(next http.Handler) http.Handler {
 
 		headerParts := strings.Split(authHeader, " ") // Bearer <TOKEN>
 		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
-			utils.WriteJson(w, http.StatusUnauthorized, utils.Envelop{"error": "invalid authorization header"})
+			utils.WriteJSON(w, http.StatusUnauthorized, utils.Envelope{"error": "invalid authorization header"})
 			return
 		}
 
 		token := headerParts[1]
 		user, err := um.UserStore.GetUserToken(tokens.ScopeAuth, token)
 		if err != nil {
-			utils.WriteJson(w, http.StatusUnauthorized, utils.Envelop{"error": "invalid token"})
+			utils.WriteJSON(w, http.StatusUnauthorized, utils.Envelope{"error": "invalid token"})
 			return
 		}
 
 		if user == nil {
-			utils.WriteJson(w, http.StatusUnauthorized, utils.Envelop{"error": "token expired or invalid"})
+			utils.WriteJSON(w, http.StatusUnauthorized, utils.Envelope{"error": "token expired or invalid"})
 			return
 		}
 
@@ -79,7 +79,7 @@ func (um *UserMiddleware) RequireUser(next http.HandlerFunc) http.HandlerFunc {
 		user := GetUser(r)
 
 		if user.IsAnonymous() {
-			utils.WriteJson(w, http.StatusUnauthorized, utils.Envelop{"error": "you must be logged in to access this route"})
+			utils.WriteJSON(w, http.StatusUnauthorized, utils.Envelope{"error": "you must be logged in to access this route"})
 			return
 		}
 

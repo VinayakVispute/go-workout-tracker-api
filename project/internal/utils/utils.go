@@ -9,10 +9,10 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-type Envelop map[string]interface{} // interface{} is a generic type that can hold any value
-// Envelop is a map that can hold any type of data. It is used to create a JSON response with a single key-value pair.
+type Envelope map[string]interface{} // interface{} is a generic type that can hold any value
+// Envelope is a map that can hold any type of data. It is used to create a JSON response with a single key-value pair.
 
-func WriteJson(w http.ResponseWriter, status int, data Envelop) error {
+func WriteJSON(w http.ResponseWriter, status int, data Envelope) error {
 
 	js, err := json.MarshalIndent(data, "", "	")
 	if err != nil {
