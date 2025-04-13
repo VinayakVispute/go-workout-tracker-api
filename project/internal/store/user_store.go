@@ -88,6 +88,7 @@ func (s *PostgresUserStore) GetUserByUsername(username string) (*User, error) {
 	err := s.db.QueryRow(query, username).Scan(
 		&user.ID,
 		&user.Username,
+		&user.Email,
 		&user.PasswordHash.hash,
 		&user.Bio,
 		&user.CreatedAt,
