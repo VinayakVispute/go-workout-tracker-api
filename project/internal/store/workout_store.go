@@ -217,7 +217,7 @@ func (pg *PostgresWorkoutStore) GetWorkoutOwner(workoutID int64) (int, error) {
 	SELECT user_id FROM workouts
 	WHERE id = $1
 	`
-	err := pg.db.QueryRow(query, workoutID).Scan(userID)
+	err := pg.db.QueryRow(query, workoutID).Scan(&userID)
 	if err != nil {
 		return 0, err
 	}
