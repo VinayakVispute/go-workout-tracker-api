@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/vinayakvispute/project/internal/api"
+	"github.com/vinayakvispute/project/internal/middleware"
 	"github.com/vinayakvispute/project/internal/store"
 	"github.com/vinayakvispute/project/migrations"
 )
@@ -18,6 +19,7 @@ type Application struct {
 	DB             *sql.DB
 	UserHandler    *api.UserHandler
 	TokenHandler   *api.TokenHandler
+	Middleware     middleware.UserMiddleware
 }
 
 func NewApplication() (*Application, error) {
@@ -43,6 +45,9 @@ func NewApplication() (*Application, error) {
 	workoutHandler := api.NewWorkoutHandler(workoutStore, logger)
 	userHandler := api.NewUserHandler(userStore, logger)
 	tokenHandler := api.NewTokenHandler(tokenStore, userStore, logger)
+	middlewareHandler := middleware.UserMiddleware{
+		UserStore: userStore,
+	}
 
 	app := &Application{
 		Logger:         logger,
@@ -50,6 +55,7 @@ func NewApplication() (*Application, error) {
 		DB:             pgDB,
 		UserHandler:    userHandler,
 		TokenHandler:   tokenHandler,
+		Middleware:     middlewareHandler,
 	}
 	return app, nil
 }
