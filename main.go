@@ -3,15 +3,24 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/joho/godotenv"
 	"github.com/vinayakvispute/project/internal/app"
 	"github.com/vinayakvispute/project/internal/routes"
 )
 
 // 2144222456
 func main() {
+
+	err := godotenv.Load()
+
+	if err != nil {
+		log.Fatal("Error loading .env file")
+		panic("Error loading .env file")
+	}
 
 	var port int
 
@@ -25,7 +34,7 @@ func main() {
 	}
 
 	defer app.DB.Close()
- 
+
 	r := routes.SetupRoutes(app)
 
 	server := &http.Server{
