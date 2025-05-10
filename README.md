@@ -49,6 +49,7 @@ go-workout-tracker-api/
 │   └── utils/              # Utility functions
 ├── main.go                 # Application entry point
 └── migrations/             # Database migrations
+└── .env                    # Environment variables
 ```
 
 ## API Endpoints
@@ -136,22 +137,38 @@ type Token struct {
 ### Setup and Installation
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/vinayakvispute/go-lang.git
    cd go-lang
    ```
 
-2. Start the PostgreSQL database:
+2. Create a `.env` file in the root directory with this env variable and add your own database credentials:
+
+   ```env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_USER=your_db_user
+   DB_PASSWORD=your_db_password
+   DB_NAME=your_db_name
+   DB_SSLMODE=your_jwt_secret
+
+   ```
+
+3. Start the PostgreSQL database:
+
    ```
    docker-compose up
    ```
 
-3. Run the application:
+4. Run the application:
+
    ```
    go run main.go
    ```
 
    By default, the server runs on port 8080. You can specify a different port using the `-port` flag:
+
    ```
    go run main.go -port 3000
    ```
@@ -165,6 +182,7 @@ The application uses the `goose` migration tool to manage database schema change
 ### Testing
 
 To run tests:
+
 ```
 go test ./...
 ```
@@ -190,6 +208,7 @@ A separate test database is configured in the Docker Compose file to ensure test
 Detailed documentation for the API, including endpoints, data models, and implementation details, can be found in the [docs/](./docs/) directory.
 
 ### Code Improvement's To-Do List
+
 - [ ] Create detailed documentation in docs/ directory covering API endpoints, data models, and implementation details
 - [ ] Implement query timeouts for database operations
 - [ ] Add proper database locking mechanisms
