@@ -215,6 +215,17 @@ Detailed documentation for the API, including endpoints, data models, and implem
 - [ ] Improve concurrency handling
 - [ ] Add more comprehensive error handling
 
+## Important Commands
+
+```bash
+pm2 start /root/go-workout-tracker-api/mainFile \
+  --name workout-api \
+  --cwd /root/go-workout-tracker-api \
+  --time            # timestamps in logs
+
+pm2 save            # remember the process list for reboot
+```
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

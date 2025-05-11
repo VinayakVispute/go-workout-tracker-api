@@ -1,0 +1,34 @@
+name: Redeploying to Production server
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  redeploy_everything_production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Execute remote SSH commands using SSH key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+            cd go-workout-tracker-api/
+            git pull origin main
+            export PATH=/root/.nvm/versions/node/v22.14.0/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+            go mod download
+            go build -o mainFile
+
+            pm2 restart workout-api || pm2 start /root/go-workout-tracker-api/mainFile   --name workout-api   --cwd /root/go-workout-tracker-api   --time # timestamps in logs
+
+
+            echo "All Services are deployed succesfully."
